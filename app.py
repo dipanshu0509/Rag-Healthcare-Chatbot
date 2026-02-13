@@ -15,9 +15,16 @@ print("Loaded key:", os.getenv("GROQ_API_KEY"))
 app = FastAPI(title="Medical Information Retrieval System (Groq)")
 
 # ---------- Load FAISS ----------
-embeddings = HuggingFaceEmbeddings(
-    model_name="sentence-transformers/all-MiniLM-L6-v2"
-)
+embeddings = None
+
+def get_embeddings():
+    global embeddings
+    if embeddings is None:
+        from langchain_huggingface import HuggingFaceEmbeddings
+        embeddings = HuggingFaceEmbeddings(
+            model_name="sentence-transformers/all-MiniLM-L6-v2"
+        )
+    return embeddings
 
 vectorstore = FAISS.load_local(
     "vectorstore/medical_knowledge",
