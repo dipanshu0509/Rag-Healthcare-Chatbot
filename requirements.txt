@@ -10,5 +10,3 @@ faiss-cpu
 openai
 langchain-groq
 python-dotenv
-requests
-gradio
