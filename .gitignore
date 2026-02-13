@@ -1,0 +1,34 @@
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environments
+venv/
+ingest/venv/
+
+
+# Environment variables
+.env
+.env.*
+
+# IDE
+.vscode/
+
+frontend/__pycache__/
+
+# Gradio temp
+.gradio/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Cache
+.cache/
+pytest_cache/
