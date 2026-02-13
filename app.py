@@ -28,7 +28,7 @@ def get_embeddings():
 
 vectorstore = FAISS.load_local(
     "vectorstore/medical_knowledge",
-    embeddings,
+    get_embeddings(),
     allow_dangerous_deserialization=True
 )
 
