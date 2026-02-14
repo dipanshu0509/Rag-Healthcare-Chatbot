@@ -59,8 +59,8 @@ User → Gradio UI → FastAPI → FAISS Retrieval → Groq LLM → Response
 ## 1️⃣ Clone the Repository
 
 ```bash
-git clone <your-repo-url>
-cd <your-project-folder>
+git clone https://github.com/dipanshu0509/Rag-Healthcare-Chatbot/blob/main/Readme.md
+cd <your project path>
 ```
 
 ---
@@ -110,7 +110,7 @@ GROQ_API_KEY=your_groq_api_key_here
 ## 🔹 Step 1: Run FastAPI Backend
 
 ```bash
-uvicorn backend:app --reload
+uvicorn app:app --reload
 ```
 
 Default backend URL:
