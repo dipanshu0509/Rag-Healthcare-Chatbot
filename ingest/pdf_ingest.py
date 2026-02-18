@@ -1,6 +1,10 @@
 import os
 from langchain_core.documents import Document
-from langchain_community.document_loaders import PyPDFLoader
+# from langchain_community.document_loaders import PyPDFLoader
+
+from langchain_community.document_loaders import PDFPlumberLoader
+
+
 
 def load_pdfs(pdf_dir):
     documents = []
@@ -10,7 +14,8 @@ def load_pdfs(pdf_dir):
             continue
 
         file_path = os.path.join(pdf_dir, filename)
-        loader = PyPDFLoader(file_path)
+        loader = PDFPlumberLoader(file_path)
+        #loader = PyPDFLoader(file_path)
         pages = loader.load()
 
         for page in pages:
