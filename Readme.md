@@ -143,12 +143,13 @@ Gradio URL will be generated in terminal.
 
 ```
 medical-rag/
-│
-├── backend.py
+├── Frontend/
+      ├── app.py
+├── data/raw/pdfs/
+      ├── pdf_ingestion.py
 ├── app.py
-├── ingestion.py
+├── build_knowledge_base.py
 ├── vectorstore/
-├── data/
 ├── requirements.txt
 ├── .env
 └── README.md
