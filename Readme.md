@@ -1,8 +1,8 @@
-# 🩺  RAGMed – AI-Powered Conversational Healthcare Assistant
+# 🩺  RAGMed - AI Powered Conversational Healthcare Assistant
 
 A production-style **Retrieval-Augmented Generation (RAG)** system that answers medical questions using indexed medical documents such as **WHO**, **NHM**, and clinical guideline PDFs.
 
-This system retrieves relevant medical content from trusted sources and generates responses using an LLM — **without hardcoded answers**.
+This system retrieves relevant medical content from trusted sources and generates responses using an LLM  **without hardcoded answers**.
 
 ---
 
