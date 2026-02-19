@@ -1,4 +1,4 @@
-# 🩺 Medical Information Retrieval System (RAG-Based)
+# 🩺  RAGMed – AI-Powered Conversational Healthcare Assistant
 
 A production-style **Retrieval-Augmented Generation (RAG)** system that answers medical questions using indexed medical documents such as **WHO**, **NHM**, and clinical guideline PDFs.
 
