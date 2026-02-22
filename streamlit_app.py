@@ -1,5 +1,4 @@
 import streamlit as st
-import uuid
 import os
 import base64
 from dotenv import load_dotenv
@@ -10,30 +9,27 @@ from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
 
 
-# ---------------- PAGE CONFIG ----------------
+# page configuration 
 
 st.set_page_config(
-    page_title="RAGMed Healthcare Assistant",
+    page_title="RAGMed-AI Healthcare Assistant",
     page_icon="🩺",
-    layout="centered"
+    layout="wide"
 )
-
-
-# ---------------- BACKGROUND IMAGE FUNCTION ----------------
+# image
 
 def get_base64_image(image_path):
     with open(image_path, "rb") as img:
         return base64.b64encode(img.read()).decode()
 
-img_base64 = get_base64_image("WW.jpg")
+img_base64 = get_base64_image("26087.jpg")
 
 
-# ---------------- CSS ----------------
+# CSS
 
 st.markdown(f"""
 <style>
 
-/* Background image */
 .stApp {{
     background-image: url("data:image/jpeg;base64,{img_base64}");
     background-size: cover;
@@ -42,7 +38,6 @@ st.markdown(f"""
     background-attachment: fixed;
 }}
 
-/* Remove default white areas */
 [data-testid="stAppViewContainer"] {{
     background: transparent;
 }}
@@ -51,86 +46,126 @@ st.markdown(f"""
     background: transparent;
 }}
 
-/* Main container card */
 .block-container {{
-    max-width: 450px;
-    background-color: rgba(4, 57, 107, 0.95);
-    padding: 25px;
-    border-radius: 15px;
-
-    margin-left: auto;
-    margin-right:auto;
-    margin-top: 10px;
-    box-shadow: 0px 4px 25px rgba(0,0,0,0.5);
+    max-width: 100% !important;
+    padding-top: 140px;
+    padding-bottom: 120px;
+    padding-left: 12%;
+    padding-right: 12%;
 }}
 
-/* Heading */
-.heading {{
-    text-align: center;
-    font-size: 26px;
-    font-weight: bold;
-    color: #e1e7fa;
-    margin-bottom: 5px;
+.fixed-header {{
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
+    background-color: transparent;
+    padding: 18px;
+    text-align: center;
+    z-index: 1000;
+    box-shadow: none;
+}}
+
+.heading {{
+    font-size: 40px;
+    font-weight: bold;
+    color: white;
 }}
 
 .subheading {{
-    text-align: center;
-    font-size: 18px;
-    color: #e1e7fa;
-    margin-bottom: 15px;
-    width: 100%;
+    font-size: 20px;
+    color: #cbd5e1;
 }}
 
 .warning {{
-    text-align: center;
-    font-size: 14px;
-    color: #F59E0B;
-    margin-bottom: 20px;
-    width: 100%;
+    font-size: 17px;
+    color: #f59e0b;
 }}
 
-/* User bubble */
-.stChatMessage[data-testid="stChatMessage-user"] {{
-    background-color: #DCFCE7 !important;
-    border-radius: 10px;
-    padding: 10px;
+.chat-container {{
+    max-width: 850px;
+    margin: auto;
 }}
 
-.stChatMessage[data-testid="stChatMessage-user"] * {{
-    color: #111827 !important;
+.chat-wrapper {{
+    max-width: 700px;
+    margin: auto;
+    padding-left: 20px;
+    padding-right: 20px;
 }}
 
-/* Assistant bubble */
-.stChatMessage[data-testid="stChatMessage-assistant"] {{
-    background-color: #E0F2FE !important;
-    border-radius: 10px;
-    padding: 10px;
+.user-box {{
+    background: rgba(255, 255, 255, 0.75);
+    color: #000000;
+    padding: 14px 18px;
+    border-radius: 18px;
+    margin: 12px 0px;
+    margin-left: auto;
+    font-size: 17px;
+    font-family: "Inter", "Segoe UI", sans-serif;
+    line-height: 1.5;
+    border: 1px solid #c2a46d;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.25);
+    width: fit-content;
+    max-width: 65%; 
+    backdrop-filter: blur(6px);  
+    -webkit-backdrop-filter: blur(6px);
 }}
 
-.stChatMessage[data-testid="stChatMessage-assistant"] * {{
-    color: #000000 !important;
+
+.bot-box {{
+    background: rgba(255, 255, 255, 0.75);
+    color: #000000;
+    padding: 16px 20px;
+    border-radius: 18px;
+    margin: 12px 0px;
+    margin-right: auto;
+    font-size: 17px;
+    font-family: "Inter", "Segoe UI", sans-serif;
+    line-height: 1.5;
+    border: 1px solid #c2a46d;
+    box-shadow: 2px 2px 12px rgba(0,0,0,0.30);
+    width: fit-content;
+    max-width: 65%;              
+    backdrop-filter: blur(6px);  
+    -webkit-backdrop-filter: blur(6px);
 }}
 
-/* Input box */
-[data-testid="stChatInput"] {{
-    border-radius: 20px !important;
+div[data-testid="stChatInput"] {{
+    position: fixed !important;
+    bottom: 20px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 700px !important;
+    z-index: 1000 !important;
+}}
+
+div[data-testid="stButton"] > button {{
+    position: fixed !important;
+    bottom: 27px !important;
+    left: calc(42% - 380px) !important;
+    width: 110px !important;
+    height: 45px !important;
+    border-radius: 10px !important;
+    z-index: 1001 !important;
+}}
+
+div[data-testid="stButton"] {{
+    background: transparent !important;
 }}
 
 </style>
 """, unsafe_allow_html=True)
 
-
-# ---------------- HEADING ----------------
-
+# header
 st.markdown("""
-<div class="heading">🩺 RAGMed Healthcare Assistant</div>
-<div class="subheading">AI Powered Clinical Knowledge Support</div>
-<div class="warning">⚠ For educational purposes only. Not medical advice.</div>
+<div class="fixed-header">
+    <div class="heading">🩺 RAGMed - AI Healthcare Assistant</div>
+    <div class="subheading">AI Powered Clinical Knowledge Support</div>
+    <div class="warning">⚠ For educational purposes only. Not intended as medical advice.</div>
+</div>
 """, unsafe_allow_html=True)
 
-
-# ---------------- LOAD ENV ----------------
 
 load_dotenv()
 
@@ -140,8 +175,7 @@ if not api_key:
     st.error("GROQ_API_KEY missing")
     st.stop()
 
-
-# ---------------- LOAD MODELS ----------------
+#Models loading
 
 @st.cache_resource
 def load_models():
@@ -170,13 +204,27 @@ def load_models():
 retriever, llm = load_models()
 
 
-# ---------------- PROMPT ----------------
-
 prompt = ChatPromptTemplate.from_template("""
-You are a medical assistant.
+You are an AI-powered medical knowledge assistant.
 
-Use only the provided context.
-Do not give medical advice.
+STRICT RULES:
+
+1. Use ONLY the information provided in the context.
+2. Do NOT use your own knowledge.
+3. If the answer is not in the context, say:
+   "I cannot find this information in the provided medical documents."
+
+4. Do NOT provide medical advice, diagnosis, treatment, prescription, or procedures.
+5. Do NOT simulate being a doctor, nurse, or emergency responder.
+6. If the user describes a medical emergency (examples: chest pain, breathing difficulty, heart attack symptoms, unconsciousness, severe bleeding), respond ONLY with:
+
+   "This may be a medical emergency. Please seek immediate medical attention or contact emergency services or a qualified healthcare professional."
+
+7. Do NOT provide step by step medical instructions.
+8. Keep responses informational and educational only.
+9. Do not hallucinate or invent information.
+10. Always prioritize safety.
+11. Always mention "Educational purposes only. Please consult a doctor before making any medical decisions." in every treatment or medicine advice answer.
 
 Context:
 {context}
@@ -188,24 +236,50 @@ Answer:
 """)
 
 
-# ---------------- SESSION STATE ----------------
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
 
-# ---------------- DISPLAY CHAT ----------------
+#chat area
+st.markdown('<div class="chat-wrapper">', unsafe_allow_html=True)
 
 for msg in st.session_state.messages:
-    with st.chat_message(msg["role"]):
-        st.markdown(msg["content"])
+
+    if msg["role"] == "user":
+        st.markdown(
+            f'<div class="user-box">🧑‍💻 {msg["content"]}</div>',
+            unsafe_allow_html=True
+        )
+
+    else:
+        st.markdown(
+            f'<div class="bot-box">🩺 {msg["content"]}</div>',
+            unsafe_allow_html=True
+        )
+
+st.markdown('</div>', unsafe_allow_html=True)
 
 
-# ---------------- USER INPUT ----------------
+st.markdown('<div class="bottom-bar"><div class="bottom-container">', unsafe_allow_html=True)
 
-user_input = st.chat_input("Type your medical question...")
+col1, col2 = st.columns([1,6])
+
+with col1:
+    if st.button("New Chat", key="new_chat_button_fixed"):
+        st.session_state.messages = []
+        st.rerun()
+
+with col2:
+    user_input = st.chat_input(
+        "Type your medical question...",
+        key="chat_input_fixed"
+    )
+
+st.markdown('</div></div>', unsafe_allow_html=True)
 
 
+# user input
 if user_input:
 
     st.session_state.messages.append({
@@ -213,8 +287,10 @@ if user_input:
         "content": user_input
     })
 
-    with st.chat_message("user"):
-        st.markdown(user_input)
+    st.markdown(
+        f'<div class="user-box">🧑‍💻 {user_input}</div>',
+        unsafe_allow_html=True
+    )
 
     docs = retriever.invoke(user_input)
 
@@ -234,19 +310,9 @@ if user_input:
     else:
         answer = "No relevant medical information found."
 
-    answer += "\n\n⚠ Educational purposes only. Not medical advice."
-
-    with st.chat_message("assistant"):
-        st.markdown(answer)
-
     st.session_state.messages.append({
         "role": "assistant",
         "content": answer
     })
 
-
-# ---------------- NEW CHAT BUTTON ----------------
-
-if st.button("New Chat"):
-    st.session_state.messages = []
     st.rerun()
